@@ -1,5 +1,7 @@
 package com.example.e_book.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -14,11 +16,12 @@ import com.example.e_book.presentation.auth.SignInScreenUI
 import com.example.e_book.presentation.auth.SignUpScreenUI
 import com.example.e_book.presentation.pdfView
 
+@RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
 @Composable
 fun AppNavigation(): NavHostController {
 
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination =  routs.HomeScreen) {
+    NavHost(navController = navController, startDestination =  routs.SignInScreen) {
 
     composable<routs.HomeScreen> {
         TabBar(navController)

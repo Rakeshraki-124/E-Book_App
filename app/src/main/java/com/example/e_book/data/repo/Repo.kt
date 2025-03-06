@@ -5,6 +5,7 @@ import android.util.Log
 import com.example.e_book.ResultState
 import com.example.e_book.data.response.BookCategoryModel
 import com.example.e_book.data.response.BookModels
+import com.example.e_book.local.BookEntity
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -23,5 +24,9 @@ interface Repo  {
    suspend fun getAllBooksCategory(): Flow<ResultState<List<BookCategoryModel>>>
 
    suspend fun getBookByCategory(category: String): Flow<ResultState<List<BookModels>>>
+
+   suspend fun saveBook(book: BookEntity)
+   suspend fun deleteBook(bookId: String)
+   suspend fun getAllSavedBooks(): Flow<List<BookEntity>>
 
 }

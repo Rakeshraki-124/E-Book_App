@@ -16,4 +16,8 @@
     <color name="accentColor">#03DAC5</color>
     <color name="backgroundColor">#F5F5F5</color>
     <color name="textColor">#212121</color>
+
+    <color name="gry">#adb5bd</color>
+    <color name="darkgry">#6c757d</color>
+    <color name="lightgry">#adb5bd</color>
 </resources>

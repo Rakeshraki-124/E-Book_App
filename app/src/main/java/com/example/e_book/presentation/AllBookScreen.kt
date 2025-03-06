@@ -28,6 +28,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.ArrowOutward
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Navigation
 import androidx.compose.material.icons.filled.SkipNext
 import androidx.compose.material3.Card
@@ -59,11 +61,17 @@ import coil.compose.AsyncImage
 import com.example.e_book.R
 
 import com.example.e_book.ViewModel.AppViewModel
+import com.example.e_book.data.response.BookModels
+import com.example.e_book.data.response.toBookEntity
+import com.example.e_book.local.BookEntity
 import com.example.e_book.navigation.routs
 
 @Composable
 fun AllBookScreen(viewModel: AppViewModel = hiltViewModel(), navController: NavController) {
     val state = viewModel.getAllBookState.collectAsState()
+    val savedBooks = viewModel.savedBookState.collectAsState()
+
+
 
     LaunchedEffect(Unit) {
         viewModel.getAllBooks()
@@ -88,13 +96,31 @@ fun AllBookScreen(viewModel: AppViewModel = hiltViewModel(), navController: NavC
                 modifier = Modifier.fillMaxSize().background(colorResource(id = R.color.Screen)),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(state.value.data) { book ->
+                items(
+                    state.value.data,
+                    key = { book ->
+                        if (book.id.isEmpty()) {
+                            // Fallback key for empty IDs
+                            "book-${book.BooksName}-${book.Author}"
+                        } else {
+                            book.id
+                        }
+                    }
+                    ) { book ->
                     BookItem(
                         title = book.BooksName,
                         bookImage = book.BookImage,
                         author = book.Author,
+                        isSaved = savedBooks.value.any { it.id == book.id }, // Check if the book is saved
                         onItemClick = {
                             navController.navigate(routs.pdfView(book.bookUrl))
+                        },
+                        onSaveClick = {
+                            Log.d("SaveBook", "Saving book: ${book.BooksName} (ID: ${book.id})")
+                            viewModel.saveBook(book.toBookEntity()) // Save the book
+                        },
+                        onDeleteClick = {
+                            viewModel.deleteBook(book.id) // Delete the book
                         }
                     )
                 }
@@ -114,7 +140,11 @@ fun BookItem(
     title: String,
     bookImage: String,
     author: String,
-    onItemClick: () -> Unit
+    isSaved: Boolean,
+    onItemClick: () -> Unit,
+    onSaveClick: () -> Unit,
+    onDeleteClick: () -> Unit = {}
+
 ) {
     Card(
         modifier = Modifier
@@ -169,6 +199,29 @@ fun BookItem(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
                 )
             }
+
+
+            // Save Button
+            IconButton(
+                onClick = {
+                    if (isSaved) {
+                        onDeleteClick() // Remove from saved books
+                    } else {
+                        onSaveClick() // Save the book
+                    }
+                },
+                modifier = Modifier.padding(end = 8.dp),
+                colors = IconButtonDefaults.iconButtonColors(
+                    containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+                )
+            ) {
+                Icon(
+                    imageVector = if (isSaved) Icons.Default.Bookmark else Icons.Default.BookmarkBorder,
+                    contentDescription = if (isSaved) "Saved" else "Save",
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+
 
             // Open Book Icon
             IconButton(

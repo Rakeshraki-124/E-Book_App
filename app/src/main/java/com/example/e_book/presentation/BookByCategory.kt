@@ -19,6 +19,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.e_book.R
 import com.example.e_book.ViewModel.AppViewModel
+import com.example.e_book.data.response.toBookEntity
 import com.example.e_book.navigation.routs
 
 @Composable
@@ -26,7 +27,8 @@ fun BookByCategory(navController: NavController, viewModel: AppViewModel = hiltV
                    ) {
 
     val state = viewModel.getBooksByCategoryState.collectAsState()
-    val data = state.value.data ?: emptyList()
+    val savedBooks = viewModel.savedBookState.collectAsState()
+
 
     LaunchedEffect(key1 = Unit) {
         viewModel.getBooksByCategory(category)
@@ -44,14 +46,30 @@ fun BookByCategory(navController: NavController, viewModel: AppViewModel = hiltV
         state.value.data.isNotEmpty() ->{
 
             LazyColumn(modifier = Modifier.fillMaxSize().background(colorResource(id = R.color.Screen))) {
-                items(data){
+                items(state.value.data,
+                    key = { book ->
+                        if (book.id.isEmpty()) {
+                            // Fallback key for empty IDs
+                            "book-${book.BooksName}-${book.Author}"
+                        } else {
+                            book.id
+                        }
+                    }
+                    ){book ->
                     BookItem(
-                        title = it.BooksName,
-                        author = it.Author,
-                        bookImage = it.BookImage,
+                        title = book.BooksName,
+                        author = book.Author,
+                        bookImage = book.BookImage,
                         onItemClick = {
-                            navController.navigate(routs.pdfView(it.bookUrl))
+                            navController.navigate(routs.pdfView(book.bookUrl))
                         },
+                        isSaved = savedBooks.value.any { it.id == book.id },
+                        onSaveClick = {
+                            viewModel.saveBook(book.toBookEntity())
+                        },
+                        onDeleteClick = {
+                            viewModel.deleteBook(book.id)
+                        }
                     )
                 }
             }

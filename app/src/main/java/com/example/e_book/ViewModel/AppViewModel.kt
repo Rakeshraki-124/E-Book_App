@@ -7,6 +7,7 @@ import com.example.e_book.ResultState
 import com.example.e_book.data.repo.Repo
 import com.example.e_book.data.response.BookCategoryModel
 import com.example.e_book.data.response.BookModels
+import com.example.e_book.local.BookEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,6 +26,13 @@ class AppViewModel @Inject constructor(private val repo: Repo): ViewModel() {
 
     private val _getBooksByCategoryState = MutableStateFlow(GetAllBooksByCategoryState())
     val  getBooksByCategoryState = _getBooksByCategoryState.asStateFlow()
+
+    private val _savedBookState = MutableStateFlow<List<BookEntity>>(emptyList())
+    val savedBookState = _savedBookState.asStateFlow()
+
+    init {
+        loadSavedBooks()
+    }
 
     fun getAllBooks(){
         viewModelScope.launch(Dispatchers.IO){
@@ -49,6 +57,8 @@ class AppViewModel @Inject constructor(private val repo: Repo): ViewModel() {
             }
         }
       //  Log.d("OTPT", "getAllBooks: ${getAllBooks()}")
+
+
     }
 
     fun getAllBooksCategory(){
@@ -93,7 +103,28 @@ class AppViewModel @Inject constructor(private val repo: Repo): ViewModel() {
 
         }
     }
+    fun saveBook(book: BookEntity){
+    viewModelScope.launch(Dispatchers.IO){
+        Log.d("SaveBookVM", "Saving book: ${book.title} (ID: ${book.id})")
+        repo.saveBook(book)
+        _savedBookState.value = _savedBookState.value + book
+     }
+    }
+    fun deleteBook(bookId: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.deleteBook(bookId) // Delete the book from the database
+            _savedBookState.value = _savedBookState.value.filter { it.id != bookId } // Remove the book from the saved list
+        }
+    }
 
+    private fun loadSavedBooks(){
+        viewModelScope.launch {
+            repo.getAllSavedBooks().collect{ savedBooks ->
+                Log.d("SavedBooksNewScr", "Saved books: ${savedBooks.joinToString { it.title }}")
+                _savedBookState.value = savedBooks
+            }
+        }
+    }
 }
 
 data class GetAllBooksState(
@@ -108,6 +139,12 @@ data class GetAllBooksCategoryState(
     val error: String = ""
 )
 data class GetAllBooksByCategoryState(
+    val isLoading: Boolean = false,
+    val data: List<BookModels> = emptyList(),
+    val error: String = ""
+)
+
+data class SaveBookState(
     val isLoading: Boolean = false,
     val data: List<BookModels> = emptyList(),
     val error: String = ""
