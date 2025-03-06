@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.Ebook" parent="android:Theme.Material.Light.NoActionBar">
+        <!-- Primary colors -->
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorAccent">@color/accentColor</item>
 
-    <style name="Theme.Ebook" parent="android:Theme.Material.Light.NoActionBar" />
+        <!-- Background and Text Colors -->
+        <item name="android:colorBackground">@color/backgroundColor</item>
+        <item name="android:textColorPrimary">@color/textColor</item>
+
+        <!-- Status Bar color (optional) -->
+        <item name="android:statusBarColor">@color/primaryDarkColor</item>
+    </style>
 </resources>

@@ -13,9 +13,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.example.e_book.R
 import com.example.e_book.ViewModel.AppViewModel
 import com.example.e_book.navigation.routs
 
@@ -41,7 +43,7 @@ fun BookByCategory(navController: NavController, viewModel: AppViewModel = hiltV
         }
         state.value.data.isNotEmpty() ->{
 
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
+            LazyColumn(modifier = Modifier.fillMaxSize().background(colorResource(id = R.color.Screen))) {
                 items(data){
                     BookItem(
                         title = it.BooksName,

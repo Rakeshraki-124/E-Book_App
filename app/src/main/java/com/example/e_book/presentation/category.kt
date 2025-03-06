@@ -1,8 +1,12 @@
 package com.example.e_book.presentation
 
 import android.util.Log
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,11 +37,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -48,6 +54,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.e_book.ViewModel.AppViewModel
 import com.example.e_book.navigation.routs
+import com.example.e_book.R
 
 
 @Composable
@@ -75,7 +82,7 @@ fun category(viewModel: AppViewModel = hiltViewModel(),navController: NavControl
                 columns = GridCells.Fixed(2), // 2 columns, adjust as needed
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(color = Color.Cyan),
+                    .background(colorResource(id = R.color.Screen)),
                 contentPadding = PaddingValues(16.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -104,48 +111,66 @@ fun BookCat(
     name: String,
     onItemClick: () -> Unit
 ) {
+    // Animation for card elevation on hover
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed = interactionSource.collectIsPressedAsState()
+    val elevation = animateDpAsState(
+        targetValue = if (isPressed.value) 12.dp else 6.dp,
+        animationSpec = tween(durationMillis = 100)
+    )
+
     Card(
         modifier = Modifier
-            .width(150.dp) // Fixed width for consistency
-            .height(180.dp) // Fixed height for consistency
-            .padding(4.dp)
-            .clickable { onItemClick() },
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.elevatedCardElevation(6.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+            .width(160.dp) // Slightly wider for better spacing
+            .height(200.dp) // Slightly taller for better spacing
+            .padding(8.dp)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null, // Disable default ripple effect
+                onClick = onItemClick
+            ),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.elevatedCardElevation(elevation.value),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+        )
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .background(colorResource(id = R.color.Items)),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
             // Image (Square Shape)
             Box(
                 modifier = Modifier
-                    .size(100.dp) // Square size
+                    .size(120.dp) // Slightly larger image
                     .clip(RoundedCornerShape(12.dp))
-                    .background(Color.LightGray) // Optional: Fallback background
+                    .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.2f)) // Fallback background
             ) {
                 AsyncImage(
                     model = categoryImageUrl,
                     contentDescription = null,
                     modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Crop,
+
                 )
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
             // Category Name
             Text(
                 text = name,
                 fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
+                fontSize = 18.sp,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(horizontal = 4.dp)
+                color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.padding(horizontal = 8.dp)
             )
         }
     }

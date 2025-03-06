@@ -17,5 +17,11 @@ sealed class routs {
         val pdfUrl: String
     )
 
+    @Serializable
+    object SignUpScreen
+
+    @Serializable
+    object SignInScreen
+
 }
 
