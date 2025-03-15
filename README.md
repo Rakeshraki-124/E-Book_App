@@ -31,25 +31,34 @@ An e-book reading application built using modern Android development tools. User
 
 ## 📸 Screenshots
 
-### Sign In & Sign Up
-<img alt="GIF" src="https://github.com/Rakeshraki-124/E-Book_App/blob/main/signIn.png" width="30%">
+## 📸 Screenshots
 
-<img alt="GIF" src="https://github.com/Rakeshraki-124/E-Book_App/blob/main/SignUp.png" width="30%">
+### Sign In & Sign Up
+<div>
+  <img alt="Sign In" src="https://github.com/Rakeshraki-124/E-Book_App/blob/main/signIn.png" width="30%">
+  <img alt="Sign Up" src="https://github.com/Rakeshraki-124/E-Book_App/blob/main/SignUp.png" width="30%">
+</div>
 
 ### Home & Book Categories
-<img alt="GIF" src="https://github.com/Rakeshraki-124/E-Book_App/blob/main/HomeScreen.png" width="30%">
-
-<img alt="GIF" src="https://github.com/Rakeshraki-124/E-Book_App/blob/main/AllBookScreen.png" width="30%">
+<div>
+  <img alt="Home Screen" src="https://github.com/Rakeshraki-124/E-Book_App/blob/main/HomeScreen.png" width="30%">
+  <img alt="All Books Screen" src="https://github.com/Rakeshraki-124/E-Book_App/blob/main/AllBookScreen.png" width="30%">
+</div>
 
 ### PDF Viewer
-<img alt="GIF" src="https://github.com/Rakeshraki-124/E-Book_App/blob/main/PdfViewScreen.png" width="30%">
+<div>
+  <img alt="PDF Viewer" src="https://github.com/Rakeshraki-124/E-Book_App/blob/main/PdfViewScreen.png" width="30%">
+</div>
 
 ### Saved Books
-<img alt="GIF" src="https://github.com/Rakeshraki-124/E-Book_App/blob/main/SavedBookScreen1.png" width="30%">
+<div>
+  <img alt="Saved Books" src="https://github.com/Rakeshraki-124/E-Book_App/blob/main/SavedBookScreen1.png" width="30%">
+</div>
 
 ### Chatbot
-<img alt="GIF" src="https://github.com/Rakeshraki-124/E-Book_App/blob/main/ChatBotScreen1.png" width="30%">
-
+<div>
+  <img alt="Chatbot" src="https://github.com/Rakeshraki-124/E-Book_App/blob/main/ChatBotScreen1.png" width="30%">
+</div>
 
 ---
 
