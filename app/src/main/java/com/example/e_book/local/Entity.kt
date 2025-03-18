@@ -3,6 +3,7 @@ package com.example.e_book.local
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.e_book.local.helper.BookDto
 
 @Entity(tableName = "saved_books")
 data class BookEntity(
@@ -11,5 +12,6 @@ data class BookEntity(
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "bookImage") val bookImage: String,
     @ColumnInfo(name = "author") val author: String,
-    @ColumnInfo(name = "bookUrl") val bookUrl: String
+    @ColumnInfo(name = "bookUrl") val bookUrl: String,
+
 )

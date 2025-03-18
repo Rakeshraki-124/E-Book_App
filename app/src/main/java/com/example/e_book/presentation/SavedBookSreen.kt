@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -43,10 +44,12 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.e_book.R
 import com.example.e_book.ViewModel.AppViewModel
+import com.example.e_book.navigation.routs
 
 @Composable
 fun SavedBookScreen(viewModel: AppViewModel = hiltViewModel(),navController: NavController) {
     val savedBooks = viewModel.savedBookState.collectAsState()
+    val context = LocalContext.current
 
     Box(
         modifier = Modifier
@@ -82,8 +85,7 @@ fun SavedBookScreen(viewModel: AppViewModel = hiltViewModel(),navController: Nav
                         author = book.author,
                         bookImage = book.bookImage,
                         onItemClick = {
-                            // Navigate to the PDF viewer or details screen
-                            // navController.navigate(routs.pdfView(book.bookUrl))
+                            navController.navigate(routs.pdfView(book.bookUrl))
                         },
                         onDeleteClick = {
                             viewModel.deleteBook(book.id) // Delete the book

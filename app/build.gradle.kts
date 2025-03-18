@@ -7,6 +7,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
     kotlin("plugin.serialization") version "2.1.0"
+    id("kotlin-parcelize") // ✅ Enable Parcelize
 }
 
 android {
@@ -68,6 +69,9 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
+    implementation ("androidx.datastore:datastore-preferences:1.0.0")
+    implementation ("androidx.datastore:datastore-core:1.0.0")
+
 
 
     implementation("androidx.compose.material3:material3:1.0.0")
@@ -104,5 +108,9 @@ dependencies {
     implementation("androidx.room:room-ktx:$room_version")
 
     implementation ("androidx.compose.material:material-icons-extended:1.5.0")
+
+
+    implementation ("com.github.barteksc:pdfium-android:1.9.0")
+
 
 }

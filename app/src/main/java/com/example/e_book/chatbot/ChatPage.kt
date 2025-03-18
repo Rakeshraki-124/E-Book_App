@@ -3,10 +3,12 @@ package com.example.e_book.chatbot
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -35,18 +37,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.e_book.ui.theme.Pink40
 import com.example.e_book.ui.theme.Purple40
+import com.example.e_book.R
+import com.example.e_book.ui.theme.Purple80
+import com.example.e_book.ui.theme.PurpleGrey40
 
 @RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
 @Composable
 fun ChatPage(modifier: Modifier = Modifier, chatViewModel: ChatViewModel) {
 
     Column(modifier = modifier) {
-        AppHeader()
         MessageList(modifier= Modifier.weight(1f),messageList = chatViewModel.messsageList)
         MessageInput(onMessageSent = {
             chatViewModel.sendMessage(it)
@@ -57,15 +62,32 @@ fun ChatPage(modifier: Modifier = Modifier, chatViewModel: ChatViewModel) {
 @Composable
 fun MessageList(modifier: Modifier = Modifier, messageList: List<MessageModel>) {
 
-    LazyColumn(
-        modifier = modifier,
-        reverseLayout = true
-    ) {
-        items(messageList.reversed()){
-            // Text(text = it.message)
-            MessageItem(message = it)
+    if (messageList.isEmpty()){
+        Column(
+            modifier = modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                modifier = Modifier.size(60.dp),
+                painter = painterResource(id = R.drawable.boat_back_icon),
+                contentDescription = "Icon",
+                tint = PurpleGrey40
+            )
+            Text(text = "Ask me anything", fontSize = 22.sp)
+        }
+    }else{
+        LazyColumn(
+            modifier = modifier,
+            reverseLayout = true
+        ) {
+            items(messageList.reversed()){
+                // Text(text = it.message)
+                MessageItem(message = it)
+            }
         }
     }
+
 }
 
 @Composable
