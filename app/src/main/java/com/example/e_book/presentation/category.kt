@@ -55,6 +55,7 @@ import coil.compose.AsyncImage
 import com.example.e_book.ViewModel.AppViewModel
 import com.example.e_book.navigation.routs
 import com.example.e_book.R
+import com.example.e_book.Utils.BookCatShimmerEffect
 
 
 @Composable
@@ -69,7 +70,19 @@ fun category(viewModel: AppViewModel = hiltViewModel(),navController: NavControl
 
     when{
         state.value.isLoading ->{
-            Text("IS LOADING")
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2), // ✅ Ensure same grid structure
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(colorResource(id = R.color.Screen)),
+                contentPadding = PaddingValues(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(10) { // Placeholder shimmer items
+                    BookCatShimmerEffect()
+                }
+            }
         }
 
         state.value.error.isNotEmpty()  ->{

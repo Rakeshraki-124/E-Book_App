@@ -105,4 +105,7 @@ dependencies {
 
     implementation ("androidx.compose.material:material-icons-extended:1.5.0")
 
+    implementation("com.valentinilk.shimmer:compose-shimmer:1.3.2")
+
+
 }
