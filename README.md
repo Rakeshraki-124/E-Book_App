@@ -31,20 +31,34 @@ An e-book reading application built using modern Android development tools. User
 
 ## 📸 Screenshots
 
+## 📸 Screenshots
+
 ### Sign In & Sign Up
-<img src="/mnt/data/signIn.png" width="300"> <img src="/mnt/data/SignUp.png" width="300">
+<div>
+  <img alt="Sign In" src="https://github.com/Rakeshraki-124/E-Book_App/blob/main/signIn.png" width="30%">
+  <img alt="Sign Up" src="https://github.com/Rakeshraki-124/E-Book_App/blob/main/SignUp.png" width="30%">
+</div>
 
 ### Home & Book Categories
-<img src="/mnt/data/HomeScreen.png" width="300"> <img src="/mnt/data/AllBookScreen.png" width="300">
+<div>
+  <img alt="Home Screen" src="https://github.com/Rakeshraki-124/E-Book_App/blob/main/HomeScreen.png" width="30%">
+  <img alt="All Books Screen" src="https://github.com/Rakeshraki-124/E-Book_App/blob/main/AllBookScreen.png" width="30%">
+</div>
 
 ### PDF Viewer
-<img src="/mnt/data/PdfViewScreen.png" width="300">
+<div>
+  <img alt="PDF Viewer" src="https://github.com/Rakeshraki-124/E-Book_App/blob/main/PdfViewScreen.png" width="30%">
+</div>
 
 ### Saved Books
-<img src="/mnt/data/SavedBookScreen.png" width="300"> <img src="/mnt/data/SavedBookScreen1.png" width="300">
+<div>
+  <img alt="Saved Books" src="https://github.com/Rakeshraki-124/E-Book_App/blob/main/SavedBookScreen1.png" width="30%">
+</div>
 
 ### Chatbot
-<img src="/mnt/data/ChatBotScreen.png" width="300"> <img src="/mnt/data/ChatBotScreen1.png" width="300">
+<div>
+  <img alt="Chatbot" src="https://github.com/Rakeshraki-124/E-Book_App/blob/main/ChatBotScreen1.png" width="30%">
+</div>
 
 ---
 
@@ -52,7 +66,7 @@ An e-book reading application built using modern Android development tools. User
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-github-username/your-repo-name.git
+   git clone https://github.com/Rakeshraki-124/E-Book_App.git
    ```
 2. Open the project in **Android Studio**.
 3. Ensure you have the required dependencies installed in `build.gradle`.
@@ -65,4 +79,4 @@ An e-book reading application built using modern Android development tools. User
 
 
 ## 💡 Contact
-For any queries, reach out to [Rakesh Behera] at [rakeshraki6049@gmail.com] or via GitHub issues.
+For any queries, reach out to [Rakesh Behera] at [rakeshraki6099@gmail.com] or via GitHub issues.

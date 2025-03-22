@@ -1,5 +1,6 @@
 package com.example.e_book.ViewModel
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,6 +14,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.net.HttpURLConnection
+import java.net.URL
 import javax.inject.Inject
 
 @HiltViewModel
@@ -106,16 +112,26 @@ class AppViewModel @Inject constructor(private val repo: Repo): ViewModel() {
     fun saveBook(book: BookEntity){
     viewModelScope.launch(Dispatchers.IO){
         Log.d("SaveBookVM", "Saving book: ${book.title} (ID: ${book.id})")
+
+
         repo.saveBook(book)
-        _savedBookState.value = _savedBookState.value + book
+        loadSavedBooks() // ✅ Reload data from Room after saving
      }
     }
-    fun deleteBook(bookId: String){
+
+
+    // ✅ DELETE Book & Remove PDF from Storage
+    fun deleteBook(bookId: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            repo.deleteBook(bookId) // Delete the book from the database
-            _savedBookState.value = _savedBookState.value.filter { it.id != bookId } // Remove the book from the saved list
+            val book = _savedBookState.value.find { it.id == bookId }
+
+
+
+            repo.deleteBook(bookId) // ✅ Remove from Room DB
+            _savedBookState.value = _savedBookState.value.filter { it.id != bookId } // ✅ Update UI
         }
     }
+
 
     private fun loadSavedBooks(){
         viewModelScope.launch {

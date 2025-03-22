@@ -1,5 +1,6 @@
 package com.example.e_book.presentation.auth
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -28,6 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,9 +49,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.e_book.R
+import com.example.e_book.UserPreferences
 import com.example.e_book.navigation.routs
 import com.example.e_book.navigation.routs.SignInScreen
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -61,6 +66,9 @@ fun SignUpScreenUI(navController: NavHostController) {
     var password by remember { mutableStateOf("") }
     var statusMessage by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
+
+    val userPreferences = UserPreferences(context)
+    val scope = rememberCoroutineScope() // Added missing CoroutineScope
 
     val buttonScale by animateFloatAsState(
         targetValue = if (isLoading) 0.95f else 1f,
@@ -157,6 +165,23 @@ fun SignUpScreenUI(navController: NavHostController) {
                             .addOnCompleteListener { task ->
                                 isLoading = false
                                 statusMessage = if (task.isSuccessful) {
+
+                                    val userId = auth.currentUser?.uid
+                                    val userRef = FirebaseDatabase.getInstance().getReference("Users").child(userId!!)
+
+                                    val user = mapOf("name" to name, "email" to email)
+                                    userRef.setValue(user) // Store name and email in Firebase
+
+                                    userRef.setValue(user)
+                                        .addOnSuccessListener {
+                                            Log.d("FirebaseSuccess", "User data stored successfully in Users section")
+                                        }
+                                        .addOnFailureListener { e ->
+                                            Log.e("FirebaseError", "Error storing user data: ${e.message}")
+                                        }
+
+
+
                                     Toast.makeText(
                                         context,
                                         "User registered: ${auth.currentUser?.email}",

@@ -31,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,6 +54,9 @@ import com.example.e_book.navigation.routs.HomeScreen
 import com.example.e_book.navigation.routs.SignUpScreen
 import com.google.firebase.auth.FirebaseAuth
 import com.example.e_book.R
+import com.example.e_book.UserPreferences
+import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,6 +67,10 @@ fun SignInScreenUI(navController: NavHostController) {
     var password by remember { mutableStateOf("") }
     var statusMessage by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) } // Loading state
+
+    val userPreferences = UserPreferences(context)
+    val scope = rememberCoroutineScope() // Added missing CoroutineScope
+
 
     // Animation for button click
     val buttonScale by animateFloatAsState(
@@ -158,12 +166,25 @@ fun SignInScreenUI(navController: NavHostController) {
                                     .addOnCompleteListener { task ->
                                         isLoading = false
                                         statusMessage = if (task.isSuccessful) {
+
+                                            val userId = auth.currentUser?.uid
+                                            val userRef = FirebaseDatabase.getInstance().getReference("Users").child(userId!!)
+
+                                            userRef.get().addOnSuccessListener { snapshot ->
+                                                val name = snapshot.child("name").value as? String ?: "User"
+
+                                                scope.launch {
+                                                    userPreferences.saveUserLogin(email) // Store email in DataStore
+                                                    userPreferences.saveUserName(name) // Store username in DataStore
+                                                }
+
                                             Toast.makeText(
                                                 context,
                                                 "User logged in: ${auth.currentUser?.email}",
                                                 Toast.LENGTH_SHORT
                                             ).show()
                                             navController.navigate(routs.HomeScreen)
+                                                }
                                             "User logged in: ${auth.currentUser?.email}"
                                         } else {
                                             "Error: ${task.exception?.message}"
